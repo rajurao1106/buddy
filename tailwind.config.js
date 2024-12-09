@@ -1,10 +1,11 @@
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+export default {
   content: [
-    './index.html',              // For Vite / Webpack setups
-    './src/**/*.{js,ts,jsx,tsx}', // Ensure all your JSX and TSX files are being scanned
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {},
   },
   plugins: [],
-};
+}
