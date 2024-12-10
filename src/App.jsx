@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
 
 export default function App() {
   const [taskTitle, setTaskTitle] = useState("");
@@ -7,36 +8,41 @@ export default function App() {
   const [data, setData] = useState([]);
   const listRef = useRef(null);
 
+  // Initialize Socket.IO client
+  const socket = io("http://192.168.43.118:3000"); // Use your backend URL
+
   useEffect(() => {
+    // Fetch existing tasks
+    const fetchTasks = () => {
+      axios
+        .get("http://192.168.43.118:3000/taskmanager/alltasks")
+        .then((response) => {
+          setData(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    };
+
+    fetchTasks();
+
     // Scroll to the bottom of the list whenever data changes
     if (listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight;
     }
-  }, [data]); // Dependency on data to trigger on data change
+  }, [data]);
 
-
-  // Function to fetch tasks
-  const fetchTasks = () => {
-    axios
-      .get("http://192.168.29.118:3000/taskmanager/alltasks") // Change to your backend IP
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
-
-  // Fetch data when the component mounts
   useEffect(() => {
-    fetchTasks();
+    // Listen for real-time updates from the server
+    socket.on("taskAdded", (newTask) => {
+      setData((prevData) => [...prevData, newTask]); // Update tasks in real-time
+    });
 
-    // Load taskTitle from localStorage if available
-    const savedTaskTitle = localStorage.getItem("taskTitle");
-    if (savedTaskTitle) {
-      setTaskTitle(savedTaskTitle);
-    }
-  }, []);
+    // Clean up socket connection on unmount
+    return () => {
+      socket.disconnect();
+    };
+  }, [socket]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,21 +53,12 @@ export default function App() {
     };
 
     try {
-      await axios.post("http://192.168.29.118:3000/taskmanager/newtask", task); // Change to your backend IP
+      await axios.post("http://192.168.43.118:3000/taskmanager/newtask", task); // Add task
       setTaskDescription("");
-      localStorage.removeItem("taskTitle"); // Optionally remove title from localStorage
-
-      // Reload tasks after adding a new one
-      fetchTasks();
+      setTaskTitle("");
     } catch (error) {
       console.error("There was an error adding the task!", error);
     }
-  };
-
-  const handleTaskTitleChange = (e) => {
-    const newTaskTitle = e.target.value;
-    setTaskTitle(newTaskTitle);
-    localStorage.setItem("taskTitle", newTaskTitle); // Save taskTitle to localStorage
   };
 
   return (
@@ -75,7 +72,7 @@ export default function App() {
             <div className="w-full p-10 max-md:p-5 flex flex-col gap-5">
               <input
                 value={taskTitle}
-                onChange={handleTaskTitleChange} // Use handleTaskTitleChange to update state and localStorage
+                onChange={(e) => setTaskTitle(e.target.value)}
                 placeholder="Enter Your Name"
                 type="text"
                 className="w-full h-[60px] max-md:h-[50px] pl-5 border-gray-500 border-2 rounded-xl"
@@ -95,12 +92,12 @@ export default function App() {
             </button>
           </form>
         </div>
-        <div className="w-full h-[100%] overflow-y-auto py-5" ref={listRef}>
+        <div className="w-full h-[100%] overflow-y-auto p-1" ref={listRef}>
           <ul>
             {data.map((item) => (
-              <li key={item._id} className="p-2 border-b">
-                <h3 className="text-lg font-semibold">{item.title}</h3>
-                <p>{item.description}</p>
+              <li key={item._id} className="p-2 border-b bg-blue-500 m-5 text-white rounded-xl rounded-es-sm">
+                <h3 className="text-lg font-semibold pl-5">{item.title}</h3>
+                <p className="pl-5">{item.description}</p>
               </li>
             ))}
           </ul>
