@@ -9,13 +9,13 @@ export default function App() {
   const listRef = useRef(null);
 
   // Initialize Socket.IO client
-  const socket = io("http://rajurao1106.github.io:3000"); // Use your backend URL
+  const socket = io("http://localhost:3000"); // Use your backend URL
 
   useEffect(() => {
     // Fetch existing tasks
     const fetchTasks = () => {
       axios
-        .get("http://rajurao1106.github.io:3000/taskmanager/alltasks")
+        .get("http://localhost:3000/taskmanager/alltasks")
         .then((response) => {
           setData(response.data);
         })
@@ -53,7 +53,7 @@ export default function App() {
     };
 
     try {
-      await axios.post("http://rajurao1106.github.io:3000/taskmanager/newtask", task); // Add task
+      await axios.post("http://localhost:3000/taskmanager/newtask", task); // Add task
       setTaskDescription("");
       setTaskTitle("");
     } catch (error) {
