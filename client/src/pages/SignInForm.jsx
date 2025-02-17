@@ -75,7 +75,7 @@ export default function SignInForm() {
 
         {/* Redirect to Signup */}
         <p className="mt-4 text-center">
-          If you have not account then <Link to="/buddy/SignupForm" className="text-blue-700">Signup</Link>
+          If you have not account then <Link to="/SignupForm" className="text-blue-700">Signup</Link>
         </p>
       </form>
     </div>

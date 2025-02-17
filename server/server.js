@@ -14,6 +14,9 @@ const PORT = 2008;
 
 // Middleware
 app.use(cors());
+
+app.use(cors({ origin: ["https://buddy-5ext.onrender.onrender.com"], credentials: true }));
+
 app.use(express.json());
 
 // Connect Database
