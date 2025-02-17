@@ -1,6 +1,6 @@
-const signup = require('../models/authentication')
+import signup from "../models/authentication.js";
 
-const signupForm = async(req, res) => {
+export const signupForm = async(req, res) => {
     try {
         const {email, password} = req.body
         const signupForm = new signup({email, password})
@@ -10,5 +10,3 @@ const signupForm = async(req, res) => {
         res.status(400).send('signin Error')
     }
 }
-
-module.exports = {signupForm}

@@ -1,5 +1,5 @@
-const User = require('../models/authentication'); 
-const signinForm = async (req, res) => {
+import User from "../models/authentication.js";
+export const signinForm = async (req, res) => {
   const { email, password } = req.body; 
 
   try {
@@ -13,5 +13,3 @@ const signinForm = async (req, res) => {
     return res.status(500).json({ message: 'Server error' });
   }
 };
-
-module.exports = { signinForm };

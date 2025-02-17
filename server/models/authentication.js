@@ -1,8 +1,8 @@
-const mongoose = require('mongoose')
+import mongoose from "mongoose";
 
 const newAuth = new mongoose.Schema({
     email: String,
     password: String
 })
 
-module.exports = mongoose.model('authentications', newAuth)
+export default mongoose.model('authentications', newAuth)

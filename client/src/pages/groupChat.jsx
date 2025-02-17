@@ -58,8 +58,7 @@ export default function groupChat() {
       setTaskDescription("");
       setTaskTitle("");
     } catch (error) {
-      console.error("There was an error adding the task!", error);//
-      
+      console.error("There was an error adding the task!", error);
     }
   }; 
 

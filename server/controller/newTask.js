@@ -1,7 +1,7 @@
-const Task = require('../models/schema');
+import Task from "../models/schema.js";
 
 // Controller to get all messages
-const newTask = async (req, res) => {
+export const newTask = async (req, res) => {
   try {
     const { title, description } = req.body;
     const newTask = new Task({ title, description });
@@ -11,5 +11,3 @@ const newTask = async (req, res) => {
     res.status(400).send("Error adding task");
   }
   };
-
-  module.exports = { newTask };

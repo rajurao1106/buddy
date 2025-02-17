@@ -1,13 +1,11 @@
-const Task = require('../models/schema'); // Import the Message model
+import Task from "../models/schema.js";
 
-// Controller to create a new message
-const allTasks = async (req, res) => {
+// Controller to get all tasks
+export const allTasks = async (req, res) => {
   try {
     const data = await Task.find();
     res.json(data);
   } catch (err) {
-    res.status(500).json({ message: 'Error fetching data' });
+    res.status(500).json({ message: "Error fetching data" });
   }
 };
-
-module.exports = { allTasks };
