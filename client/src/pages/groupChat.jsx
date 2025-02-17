@@ -10,13 +10,13 @@ export default function groupChat() {
   const listRef = useRef(null);
 
   // Initialize Socket.IO client
-  const socket = io("http://localhost:3002"); // Use your backend URL
+  const socket = io("http://localhost:2008"); // Use your backend URL
 
   useEffect(() => {
     // Fetch existing tasks
     const fetchTasks = () => {
       axios
-        .get("http://localhost:3002/taskmanager/alltasks")
+        .get("http://localhost:2008/taskmanager/alltasks")
         .then((response) => {
           setData(response.data);
         })

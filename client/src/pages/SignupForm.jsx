@@ -12,13 +12,13 @@ export default function SignupForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3002/taskmanager/signup', { email, password });
+      const response = await axios.post('http://localhost:2008/taskmanager/signup', { email, password });
       localStorage.setItem('token', response.data.token);
       alert('Logged in successfully');
       setIsSignedIn(true); // Update the sign-in state
 
       // Redirect the user to another page (e.g., '/dashboard' or '/chat')
-      navigate('/buddy/SignInForm'); // Replace with your desired path
+      navigate('/SignInForm'); // Replace with your desired path
     } catch (err) {
       alert(err.response?.data?.message || 'Something went wrong');
     }

@@ -9,10 +9,10 @@ export default function App() {
     <div className="">
       <Router>
         <Routes>
-          <Route path="/buddy/" element={<SignInForm />} />
-          <Route path="/buddy/SignupForm" element={<SignupForm />} />
-          <Route path="/buddy/SigninForm" element={<SignInForm />} />
-          <Route path="/buddy/Chat" element={<Chat />} />
+          <Route path="/" element={<SignInForm />} />
+          <Route path="/SignupForm" element={<SignupForm />} />
+          <Route path="/SigninForm" element={<SignInForm />} />
+          <Route path="/Chat" element={<Chat />} />
         </Routes>
       </Router>
     </div>

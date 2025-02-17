@@ -1,17 +1,18 @@
-const express = require('express');
-const { allTasks } = require('../controller/allTasks');
-const { deleteTask } = require('../controller/deleteTask');
-const { newTask } = require('../controller/newTask');
-const { updateTask } = require('../controller/updateTask');
-const { signinForm } = require('../controller/signin');
-const { signupForm } = require('../controller/signup');
+import express from "express";
+import { allTasks } from "../controller/allTasks.js";
+import { deleteTask } from "../controller/deleteTask.js";
+import { newTask } from "../controller/newTask.js";
+import { updateTask } from "../controller/updateTask.js";
+import { signinForm } from "../controller/signin.js";
+import { signupForm } from "../controller/signup.js";
+
 const router = express.Router();
 
-router.get('/alltasks', allTasks);
-router.post('/newtask', newTask);
-router.delete('/deletetask', deleteTask);
-router.patch('/updatetask', updateTask);
-router.post('/signin', signinForm);
-router.post('/signup', signupForm);
+router.get("/alltasks", allTasks);
+router.post("/newtask", newTask);
+router.delete("/deletetask", deleteTask);
+router.patch("/updatetask", updateTask);
+router.post("/signin", signinForm);
+router.post("/signup", signupForm);
 
-module.exports = router;
+export default router;

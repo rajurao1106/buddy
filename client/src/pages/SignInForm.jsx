@@ -12,11 +12,11 @@ export default function SignInForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3002/taskmanager/signin', { email, password });
+      const response = await axios.post('http://localhost:2008/taskmanager/signin', { email, password });
       localStorage.setItem('token', response.data.token);
       alert('Logged in successfully');
       setIsSignedIn(true); 
-      navigate('/buddy/Chat'); 
+      navigate('/Chat'); 
     } catch (err) {
       alert(err.response?.data?.message || 'Something went wrong');
     }
