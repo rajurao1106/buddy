@@ -1,11 +1,16 @@
+
 import mongoose from "mongoose";
 
 const connectDB = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/taskmanager");
-    console.log("MongoDB Connected");
+    await mongoose.connect("mongodb://127.0.0.1:27017/taskmanager", {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("✅ MongoDB Connected!");
   } catch (error) {
-    console.error(error.message);
+    console.error("❌ MongoDB Connection Failed!", error);
+    process.exit(1);
   }
 };
 
