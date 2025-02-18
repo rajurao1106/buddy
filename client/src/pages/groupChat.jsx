@@ -53,7 +53,7 @@ export default function groupChat() {
     };
 
     try {
-      await axios.post("http://localhost:3002/taskmanager/newtask", task); // Add task
+      await axios.post("http://buddy-5ext.onrender.com/taskmanager/newtask", task); // Add task
       setTaskDescription([...data, task]); // Update the UI
       setTaskDescription("");
       setTaskTitle("");

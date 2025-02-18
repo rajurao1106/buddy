@@ -24,7 +24,7 @@ export default function Chat() {
     }
 
     try {
-      const response = await axios.post("http://localhost:2008/taskmanager/newtask", {
+      const response = await axios.post("http://buddy-5ext.onrender.com/taskmanager/newtask", {
         title: taskTitle,
         description: taskDescription,
       });
