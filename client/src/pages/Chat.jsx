@@ -39,7 +39,7 @@ const Chat = () => {
             <li key={task.id} className="bg-gray-100 p-4 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold">{task.title}</h2>
               <p className="text-gray-700">{task.description}</p>
-              <span className="text-sm text-gray-500">{task.status}</span>
+             
             </li>
           ))}
         </ul>
