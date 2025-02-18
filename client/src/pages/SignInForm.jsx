@@ -13,7 +13,7 @@ export default function SignInForm() {
     try {
       await axios.post("http://buddy-5ext.onrender.com/taskmanager/signin", { email, password });
       alert("Logged in successfully");
-      navigate("/Chat"); 
+      navigate("/Chat"); // Navigate to the Chat page upon successful login
     } catch (err) {
       alert(err.response?.data?.message || "Something went wrong");
     }
@@ -71,7 +71,7 @@ export default function SignInForm() {
 
         {/* Redirect to Signup */}
         <p className="mt-4 text-center">
-          If you have not account then <Link to="/SignupForm" className="text-blue-700">Signup</Link>
+          If you don't have an account, <Link to="/SignupForm" className="text-blue-700">Signup</Link>
         </p>
       </form>
     </div>
