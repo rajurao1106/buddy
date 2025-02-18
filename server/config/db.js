@@ -1,15 +1,12 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-export const connectDB = async () => {
+const connectDB = async () => {
   try {
-    await mongoose.connect(
-      "mongodb+srv://rajurao1107:raoraju1337@cluster0.zjucb.mongodb.net/taskmanager?retryWrites=true&w=majority&appName=Cluster0"
-    );
+    await mongoose.connect("mongodb+srv://rajurao1107:raoraju1337@cluster0.zjucb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
     console.log("MongoDB Connected");
   } catch (error) {
-    console.error("MongoDB Connection Error:", error.message);
-    process.exit(1);  // Exit the process if database connection fails
+    console.error(error.message);
   }
 };
 
-
+export default connectDB;
