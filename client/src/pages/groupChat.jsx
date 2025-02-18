@@ -10,13 +10,13 @@ export default function groupChat() {
   const listRef = useRef(null);
 
   // Initialize Socket.IO client
-  const socket = io("http://localhost:2008"); // Use your backend URL
+  const socket = io("https://buddy-5ext.onrender.com"); // Use your backend URL
 
   useEffect(() => {
     // Fetch existing tasks
     const fetchTasks = () => {
       axios
-        .get("http://localhost:2008/taskmanager/alltasks")
+        .get("https://buddy-5ext.onrender.com/taskmanager/alltasks")
         .then((response) => {
           setData(response.data);
         })
@@ -53,7 +53,7 @@ export default function groupChat() {
     };
 
     try {
-      await axios.post("http://buddy-5ext.onrender.com/taskmanager/newtask", task); // Add task
+      await axios.post("https://buddy-5ext.onrender.com/taskmanager/newtask", task); // Add task
       setTaskDescription([...data, task]); // Update the UI
       setTaskDescription("");
       setTaskTitle("");

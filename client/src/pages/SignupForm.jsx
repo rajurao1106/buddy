@@ -12,7 +12,7 @@ export default function SignupForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://buddy-5ext.onrender.com/taskmanager/signup', { email, password });
+      const response = await axios.post('https://buddy-5ext.onrender.com/taskmanager/signup', { email, password });
       localStorage.setItem('token', response.data.token);
       alert('Logged in successfully');
       setIsSignedIn(true); // Update the sign-in state

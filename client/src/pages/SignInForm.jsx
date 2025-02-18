@@ -11,7 +11,7 @@ export default function SignInForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://buddy-5ext.onrender.com/taskmanager/signin", { email, password });
+      await axios.post("https://buddy-5ext.onrender.com/taskmanager/signin", { email, password });
       alert("Logged in successfully");
       navigate("/Chat"); // Navigate to the Chat page upon successful login
     } catch (err) {
