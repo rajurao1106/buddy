@@ -7,39 +7,45 @@ export default function Chat() {
   const [data, setData] = useState([]);
   const listRef = useRef(null);
 
+  // Fetch existing tasks on mount
   useEffect(() => {
-    // Fetch existing tasks on mount
     axios
       .get("https://buddy-5ext.onrender.com/taskmanager/alltasks")
       .then((response) => setData(response.data))
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if both fields are filled
     if (!taskTitle.trim() || !taskDescription.trim()) {
       alert("Both fields are required!");
       return;
     }
 
     try {
+      // Send a POST request to add a new task
       const response = await axios.post("https://buddy-5ext.onrender.com/taskmanager/newtask", {
         title: taskTitle,
         description: taskDescription,
       });
 
-      // Add new task to UI
+      // Immediately update the state to include the new task
       setData((prevData) => [...prevData, response.data]);
-      setTaskTitle(""); // Clear input fields after submission
+
+      // Clear the input fields
+      setTaskTitle("");
       setTaskDescription("");
 
-      // Scroll to the bottom
+      // Scroll to the bottom to show the newly added task
       setTimeout(() => {
         if (listRef.current) {
           listRef.current.scrollTop = listRef.current.scrollHeight;
         }
       }, 100);
+      window.location.reload()
     } catch (error) {
       console.error("Error adding task:", error);
     }
@@ -55,14 +61,14 @@ export default function Chat() {
               <input
                 value={taskTitle}
                 onChange={(e) => setTaskTitle(e.target.value)}
-                placeholder="Enter Your Name"
+                placeholder="Enter Task Title"
                 type="text"
                 className="w-full h-[60px] max-md:h-[50px] pl-5 border-gray-500 border-2 rounded-xl"
               />
               <textarea
                 value={taskDescription}
                 onChange={(e) => setTaskDescription(e.target.value)}
-                placeholder="Enter Your Message"
+                placeholder="Enter Task Description"
                 className="w-full h-[250px] max-md:h-[70px] p-5 border-gray-500 border-2 rounded-xl"
               />
             </div>
