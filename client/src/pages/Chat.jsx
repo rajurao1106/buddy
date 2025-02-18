@@ -7,66 +7,61 @@ export default function Chat() {
   const [taskDescription, setTaskDescription] = useState("");
   const [data, setData] = useState([]);
   const listRef = useRef(null);
-
-  // Initialize Socket.IO client
-  const socket = io("http://localhost:2008"); // Use your backend URL
+  const socketRef = useRef(null); // Store socket instance
 
   useEffect(() => {
-    // Fetch existing tasks
-    const fetchTasks = () => {
-      axios
-        .get("http://localhost:2008/taskmanager/alltasks")
-        .then((response) => {
-          setData(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-    };
+    // Initialize Socket.IO client
+    socketRef.current = io("http://localhost:2008");
 
-    fetchTasks();
+    // Fetch existing tasks on mount
+    axios
+      .get("http://localhost:2008/taskmanager/alltasks")
+      .then((response) => setData(response.data))
+      .catch((error) => console.error("Error fetching data:", error));
 
-    // Scroll to the bottom of the list whenever data changes
-    if (listRef.current) {
-      listRef.current.scrollTop = listRef.current.scrollHeight;
-    }
-  }, [data]);
+    // Listen for real-time task updates
+    socketRef.current.on("taskAdded", (newTask) => {
+      setData((prevData) => [...prevData, newTask]);
 
-  useEffect(() => {
-    // Listen for real-time updates from the server
-    socket.on("taskAdded", (newTask) => {
-      setData((prevData) => [...prevData, newTask]); // Update tasks in real-time
+      // Scroll to bottom when new task arrives
+      setTimeout(() => {
+        if (listRef.current) {
+          listRef.current.scrollTop = listRef.current.scrollHeight;
+        }
+      }, 100);
     });
 
     return () => {
-      socket.disconnect();
+      socketRef.current.disconnect(); // Cleanup socket on unmount
     };
-  }, [socket]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const task = {
-      title: taskTitle,
-      description: taskDescription,
-    };
+    if (!taskTitle.trim() || !taskDescription.trim()) {
+      alert("Both fields are required!");
+      return;
+    }
 
     try {
-      await axios.post("http://localhost:2008/taskmanager/newtask", task); // Add task
+      await axios.post("http://localhost:2008/taskmanager/newtask", {
+        title: taskTitle,
+        description: taskDescription,
+      });
+      setTaskTitle(""); // Clear input fields after submission
       setTaskDescription("");
     } catch (error) {
-      console.error("There was an error adding the task!", error);
+      console.error("Error adding task:", error);
     }
   };
 
   return (
     <div className="w-full h-screen p-5 bg-blue-500">
-      <div className="w-full h-[100%] rounded shadow-md flex max-md:flex-col-reverse bg-white">
-        <div className="w-full h-[100%]">
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col w-full items-center h-[100%]"
-          >
+      <div className="w-full h-full rounded shadow-md flex max-md:flex-col-reverse bg-white">
+        {/* Task Submission Form */}
+        <div className="w-full h-full">
+          <form onSubmit={handleSubmit} className="flex flex-col w-full items-center h-full">
             <div className="w-full p-10 max-md:p-5 flex flex-col gap-5">
               <input
                 value={taskTitle}
@@ -90,7 +85,9 @@ export default function Chat() {
             </button>
           </form>
         </div>
-        <div className="w-full h-[100%] overflow-y-auto p-1" ref={listRef}>
+
+        {/* Task List Display */}
+        <div className="w-full h-full overflow-y-auto p-1" ref={listRef}>
           <ul>
             {data.map((item) => (
               <li key={item._id} className="p-2 border-b bg-blue-500 m-5 text-white rounded-xl rounded-es-sm">
