@@ -1,28 +1,24 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import React, { useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
 export default function SignInForm() {
-  const [email, setEmail] = useState(''); // State for email
-  const [password, setPassword] = useState(''); // State for password
-  const [isSignedIn, setIsSignedIn] = useState(false); // State for tracking login status
+  const [email, setEmail] = useState(""); // State for email
+  const [password, setPassword] = useState(""); // State for password
   const navigate = useNavigate(); // Initialize the navigation hook
 
   // Form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:2008/taskmanager/signin', { email, password });
-      localStorage.setItem('token', response.data.token);
-      alert('Logged in successfully');
-      setIsSignedIn(true); 
-      navigate('/Chat'); 
+      await axios.post("http://localhost:2008/taskmanager/signin", { email, password });
+      alert("Logged in successfully");
+      navigate("/Chat"); 
     } catch (err) {
-      alert(err.response?.data?.message || 'Something went wrong');
+      alert(err.response?.data?.message || "Something went wrong");
     }
   };
 
-  // JSX for the SignInForm
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <form
