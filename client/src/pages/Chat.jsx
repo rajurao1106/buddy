@@ -1,39 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { io } from "socket.io-client";
 
 export default function Chat() {
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [data, setData] = useState([]);
   const listRef = useRef(null);
-  const socketRef = useRef(null); // Store socket instance
 
   useEffect(() => {
-    // Initialize Socket.IO client
-    socketRef.current = io("http://localhost:2008");
-
     // Fetch existing tasks on mount
     axios
       .get("http://localhost:2008/taskmanager/alltasks")
       .then((response) => setData(response.data))
       .catch((error) => console.error("Error fetching data:", error));
-
-    // Listen for real-time task updates
-    socketRef.current.on("taskAdded", (newTask) => {
-      setData((prevData) => [...prevData, newTask]);
-
-      // Scroll to bottom when new task arrives
-      setTimeout(() => {
-        if (listRef.current) {
-          listRef.current.scrollTop = listRef.current.scrollHeight;
-        }
-      }, 100);
-    });
-
-    return () => {
-      socketRef.current.disconnect(); // Cleanup socket on unmount
-    };
   }, []);
 
   const handleSubmit = async (e) => {
@@ -45,12 +24,22 @@ export default function Chat() {
     }
 
     try {
-      await axios.post("http://localhost:2008/taskmanager/newtask", {
+      const response = await axios.post("http://localhost:2008/taskmanager/newtask", {
         title: taskTitle,
         description: taskDescription,
       });
+
+      // Add new task to UI
+      setData((prevData) => [...prevData, response.data]);
       setTaskTitle(""); // Clear input fields after submission
       setTaskDescription("");
+
+      // Scroll to the bottom
+      setTimeout(() => {
+        if (listRef.current) {
+          listRef.current.scrollTop = listRef.current.scrollHeight;
+        }
+      }, 100);
     } catch (error) {
       console.error("Error adding task:", error);
     }
