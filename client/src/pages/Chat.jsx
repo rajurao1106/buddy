@@ -10,7 +10,7 @@ export default function Chat() {
   useEffect(() => {
     // Fetch existing tasks on mount
     axios
-      .get("http://localhost:2008/taskmanager/alltasks")
+      .get("https://buddy-5ext.onrender.com/taskmanager/alltasks")
       .then((response) => setData(response.data))
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
